@@ -49,7 +49,7 @@ function App() {
         <p>
           Create notes for yourself and save them to local storage (nothing is saved to the cloud!)
         </p>
-        <p style={{textAlign: 'center', maxWidth: '90%'}}>Encryption key note: if you would like to encrypt the notes you write, enter a "password" string into the encryption key field. The string will be run through a key derivation function (scrypt), and the resulting key will be used to encrypt your text with AES.</p>
+        <p style={{textAlign: 'center', maxWidth: '90%'}}>Encryption key note: if you would like to encrypt the notes you write, enter a "password" string into the encryption key field. The string will be run through a key derivation function (scrypt), and the resulting key will be used to encrypt your text with the AES algorithm.</p>
         <Form style={{width: '90%', paddingTop: '1%'}} onSubmit={addNewNote}>
           <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
             <Form.Control value={title} onChange={(e)=>{
