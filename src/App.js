@@ -81,7 +81,7 @@ function App() {
                   size="lg"
                 />
               </Form.Group>
-              <Button variant="primary" size="lg" className="btn btn-success d-flex justify-content-center mx-auto mt-3" block onClick={addNewNote}>
+              <Button variant="primary" size="lg" className="d-flex justify-content-center mx-auto mt-3" block onClick={addNewNote}>
                 Save Note
               </Button>
             </Form>

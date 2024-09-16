@@ -27,7 +27,7 @@ textarea, input {
 }
 
 .accordion-button:not(.collapsed) {
-  background-color: #007bff;
+  background-color: #93c7ff;
   color: white;
 }
 
