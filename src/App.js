@@ -1,7 +1,7 @@
 import './App.css';
 
 import React from 'react';
-import { Form, Button, Accordion, Row } from 'react-bootstrap';
+import { Form, Button, Accordion, Row, Col, Container, Card } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux'
 import { encrypt, decrypt } from './security/encryption';
 
@@ -32,86 +32,118 @@ function App() {
     // console.log(key)
     if(title.length>0 && body.length>0){
       let encryptedBody = key.length>0?encrypt(body, key):body
-      dispatch({type: 'add', newNote: {title: title, body: encryptedBody}})
+      dispatch({type: 'add', newNote: {title: title, body: encryptedBody, date: Date.now()}})
       setTitle("")
       setBody("")
     }
     else
-      alert("Note title and body both must be non-empty!")
+      alert("The title and body fields cannot be blank!")
   }
 
   return (
     <div className="App">
       <header className="App-header">
-        <h1>
-          Tiny Journal App
-        </h1>
-        <p>
-          Create notes for yourself and save them to local storage (nothing is saved to the cloud!)
-        </p>
-        <p style={{textAlign: 'center', maxWidth: '90%'}}>Encryption key note: if you would like to encrypt the notes you write, enter a "password" string into the encryption key field. The string will be run through a key derivation function (scrypt), and the resulting key will be used to encrypt your text with the AES algorithm.</p>
-        <Form style={{width: '90%', paddingTop: '1%'}} onSubmit={addNewNote}>
-          <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-            <Form.Control value={title} onChange={(e)=>{
-              e.preventDefault()
-              setTitle(e.target.value)
-            }} placeholder="Note title"/>
-            <Form.Control value={body} onChange={(e)=>{
-              e.preventDefault()
-              setBody(e.target.value)
-            }}  style={{marginTop: '1%'}} as="textarea" rows={15} placeholder="Your note here"/>
-            <Form.Control value={key} onChange={(e)=>{
-              e.preventDefault()
-              setKey(e.target.value)
-            }} style={{marginTop: '1.5%'}} type="password" rows={1} placeholder="Encryption key (optional)"/>
-          </Form.Group>
-        </Form>
-        <Button variant="success" onClick={addNewNote} size="lg" style={{width: '40%', marginTop: '1%', marginBottom: '3%'}}>Save</Button>
-        <h1>
-          Old Notes
-        </h1>
-        <p>
-          Here is a list of your previously saved notes (press enter to decrypt).
-        </p>
-          {
-            savedNotes.notes.length===0?<h3>No notes yet!</h3>:<Accordion style={{width: '95%'}}>
-              {
-              savedNotes.notes.map(note=>{
-              let noteId=note.title+note.body
-              return(
-              <Accordion.Item eventKey={noteId}>
-                <Accordion.Header>
-                  <p style={{marginRight: '3%'}}>{note.title}</p>
-                  <Form onSubmit={(e)=>{
-                    e.preventDefault()
-                    let decryptKey=inputs[noteId]?inputs[noteId]:""
-                    let bodyText=decryptKey.length>0?decrypt(note.body, decryptKey):note.body
-                    let bodiesCopy=bodies
-                    bodiesCopy[noteId]=bodyText
-                    setBodies(bodiesCopy)
-                    setUpdate(update+1)
-                  }}>
-                    <Form.Group as={Row} className="mb-3">
-                      <Form.Control onClick={(e)=>{
-                        e.stopPropagation()
-                      }} value={inputs[noteId]?inputs[noteId]:""} onChange={(e)=>{
-                        let inputCopy=inputs
-                        inputCopy[noteId]=e.target.value
-                        setInputs(inputCopy)
-                        setUpdate(update+1)
-                      }} placeholder="Password" type="password"/>
-                    </Form.Group>
-                  </Form>
-                </Accordion.Header>
-                <Accordion.Body style={{overflowWrap: 'break-word'}}>
-                  {bodies[noteId]?bodies[noteId]:note.body}
-                </Accordion.Body>
-              </Accordion.Item>
-              )
-            })}
+        <Container className="text-center py-4">
+          <h1 className="mb-3">Tiny Journal App</h1>
+          <p className="lead">
+          Capture your thoughts securely and store them locally — no cloud, no third parties!
+          </p>
+          <p className="small">
+          Want extra protection? Simply enter a password in the encryption key field to safeguard your notes with powerful AES encryption. Just make sure to remember your password - no one's remembering it for you!
+          </p>
+        </Container>
+
+        <Container className="mb-5">
+          <Card className="p-4 shadow-sm">
+            <Form onSubmit={addNewNote}>
+              <Form.Group className="mb-3">
+                <Form.Control
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  placeholder="Note title"
+                  className="mb-3"
+                  size="lg"
+                />
+                <Form.Control
+                  value={body}
+                  onChange={(e) => setBody(e.target.value)}
+                  as="textarea"
+                  rows={8}
+                  placeholder="Your note here"
+                  className="mb-3"
+                  size="lg"
+                />
+                <Form.Control
+                  value={key}
+                  onChange={(e) => setKey(e.target.value)}
+                  type="password"
+                  placeholder="Encryption key (optional)"
+                  size="lg"
+                />
+              </Form.Group>
+              <Button variant="primary" size="lg" className="btn btn-success d-flex justify-content-center mx-auto mt-3" block onClick={addNewNote}>
+                Save Note
+              </Button>
+            </Form>
+          </Card>
+        </Container>
+
+        <Container>
+          <h2 className="text-center mb-4">Old Notes</h2>
+          {savedNotes.notes.length === 0 ? (
+            <h5 className="text-center">No notes yet!</h5>
+          ) : (
+            <Accordion>
+              {savedNotes.notes.map(note => {
+                let noteId = note.title + note.date;
+                return (
+                  <Accordion.Item eventKey={noteId} key={noteId}>
+                    <Accordion.Header>
+                    <div className="d-flex w-100 justify-content-between">
+                      <span className='maintext'>{note.title}</span>
+                      <span className='subtext'>{new Date(note.date).toLocaleString()}</span>
+                    </div>
+                    </Accordion.Header>
+                    <Accordion.Body>
+                      <Form
+                        onSubmit={(e) => {
+                          e.preventDefault();
+                          let decryptKey = inputs[noteId] ? inputs[noteId] : "";
+                          let bodyText = decryptKey.length > 0 ? decrypt(note.body, decryptKey) : note.body;
+                          let bodiesCopy = { ...bodies };
+                          bodiesCopy[noteId] = bodyText;
+                          setBodies(bodiesCopy);
+                          setUpdate(update + 1);
+                        }}
+                      >
+                        <Row className="mb-3">
+                          <Col>
+                            <Form.Control
+                              type="password"
+                              placeholder="Password"
+                              value={inputs[noteId] || ""}
+                              onChange={(e) => {
+                                let inputCopy = { ...inputs };
+                                inputCopy[noteId] = e.target.value;
+                                setInputs(inputCopy);
+                                setUpdate(update + 1);
+                              }}
+                            />
+                          </Col>
+                          <Col>
+                            <Button type="submit" variant="secondary">Decrypt</Button>
+                          </Col>
+                        </Row>
+                      </Form>
+                      <p>{bodies[noteId] || note.body}</p>
+                    </Accordion.Body>
+                  </Accordion.Item>
+                );
+              })}
             </Accordion>
-          }
-        </header>
+          )}
+        </Container>
+      </header>
     </div>
   );
 }

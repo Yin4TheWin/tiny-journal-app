@@ -15,7 +15,6 @@ export function encrypt(body, key){
     let pwdKey = stringKeyAsPasswordKey(key)
     let aesCtr=new aesjs.ModeOfOperation.ctr(pwdKey, new aesjs.Counter(5))
     let encryptedBytes=aesCtr.encrypt(bodyAsBytes)
-
     return aesjs.utils.hex.fromBytes(encryptedBytes)
 }
 
