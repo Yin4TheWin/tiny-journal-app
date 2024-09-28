@@ -108,12 +108,6 @@ function App() {
                       <Form
                         onSubmit={(e) => {
                           e.preventDefault();
-                          let decryptKey = inputs[noteId] ? inputs[noteId] : "";
-                          let bodyText = decryptKey.length > 0 ? decrypt(note.body, decryptKey) : note.body;
-                          let bodiesCopy = { ...bodies };
-                          bodiesCopy[noteId] = bodyText;
-                          setBodies(bodiesCopy);
-                          setUpdate(update + 1);
                         }}
                       >
                         <Row className="mb-3">
@@ -127,6 +121,13 @@ function App() {
                                 inputCopy[noteId] = e.target.value;
                                 setInputs(inputCopy);
                                 setUpdate(update + 1);
+
+                                // Run the form submit logic on every edit
+                                let decryptKey = inputs[noteId] ? inputs[noteId] : "";
+                                let bodyText = decryptKey.length > 0 ? decrypt(note.body, decryptKey) : note.body;
+                                let bodiesCopy = { ...bodies };
+                                bodiesCopy[noteId] = bodyText;
+                                setBodies(bodiesCopy);
                               }}
                             />
                           </Col>
