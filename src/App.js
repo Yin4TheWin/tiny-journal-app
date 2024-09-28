@@ -130,9 +130,6 @@ function App() {
                               }}
                             />
                           </Col>
-                          <Col>
-                            <Button type="submit" variant="secondary">Decrypt</Button>
-                          </Col>
                         </Row>
                       </Form>
                       <p>{bodies[noteId] || note.body}</p>
