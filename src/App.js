@@ -122,8 +122,7 @@ function App() {
                                 setInputs(inputCopy);
                                 setUpdate(update + 1);
 
-                                // Run the form submit logic on every edit
-                                let decryptKey = inputs[noteId] ? inputs[noteId] : "";
+                                let decryptKey = inputCopy[noteId];
                                 let bodyText = decryptKey.length > 0 ? decrypt(note.body, decryptKey) : note.body;
                                 let bodiesCopy = { ...bodies };
                                 bodiesCopy[noteId] = bodyText;
