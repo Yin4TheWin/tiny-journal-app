@@ -28,7 +28,7 @@ textarea, input {
 
 .paper-container {
   background-color: white;
-  min-height: 450px;
+  height: calc(100vh - 33rem);
   position: relative;
   border: 1px solid #dee2e6;
   box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175);
@@ -48,12 +48,12 @@ textarea, input {
 }
 
 .paper-content {
+  height: calc(100vh - 33rem);
   padding: 2rem 3.5rem 2rem 4.5rem;
   line-height: 1.6rem;
   position: relative;
   z-index: 1;
   text-align: left;
-  max-height: 400px;
   overflow-y: auto;
   overflow-x: hidden;
   overflow-wrap: break-word;
@@ -79,7 +79,7 @@ textarea, input {
 }
 
 .notes-sidebar {
-  max-height: 450px;
+  height: calc(100vh - 30rem);
   overflow-y: auto;
   border: 1px solid #dee2e6;
   border-radius: 4px;
@@ -126,4 +126,19 @@ textarea, input {
 
 .trash-icon:active {
   color: #0d6efd;
+}
+
+/* Mobile Styles */
+@media (max-width: 767px) {
+  .paper-container {
+    height: 450px;
+  }
+
+  .paper-content {
+    height: 450px;
+  }
+
+  .notes-sidebar {
+    height: 450px;
+  }
 }
