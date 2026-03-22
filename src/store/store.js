@@ -6,6 +6,13 @@ const notesReducer = (state = {notes: []}, action)=>{
             notes: [action.newNote, ...state.notes]
         }
     }
+    if(action.type==='delete'){
+        const updatedNotes = [...state.notes];
+        updatedNotes.splice(action.index, 1);
+        return {
+            notes: updatedNotes
+        }
+    }
     return state
 }
 const persistentState = localStorage.getItem('state') ? JSON.parse(localStorage.getItem('state')) : {notes: []}

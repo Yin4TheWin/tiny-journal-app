@@ -113,3 +113,17 @@ textarea, input {
 .paper-content input::placeholder {
   font-weight: bold;
 }
+
+.trash-icon {
+  font-size: 1.3rem;
+  cursor: pointer;
+  transition: color 0.1s ease;
+}
+
+.trash-icon:hover {
+  opacity: 0.8;
+}
+
+.trash-icon:active {
+  color: #0d6efd;
+}

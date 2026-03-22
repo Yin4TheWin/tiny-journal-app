@@ -3,6 +3,8 @@ import React from 'react';
 import { Form, Button, Container, Row, Col, Modal } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { encrypt, decrypt } from './security/encryption';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
 function App() {
   const [title, setTitle] = React.useState("");
@@ -10,6 +12,7 @@ function App() {
   const [key, setKey] = React.useState("");
   
   const [showModal, setShowModal] = React.useState(false);
+  const [showDeleteModal, setShowDeleteModal] = React.useState(false);
   const [validated, setValidated] = React.useState(false);
   const [currentIndex, setCurrentIndex] = React.useState(0);
   const [decryptionKeys, setDecryptionKeys] = React.useState({});
@@ -34,6 +37,16 @@ function App() {
       setCurrentIndex(0);
     } else {
       setValidated(true);
+    }
+  };
+
+  const deleteNote = () => {
+    dispatch({ type: 'delete', index: currentIndex });
+    setShowDeleteModal(false);
+    if (currentIndex > 0) {
+      setCurrentIndex(currentIndex - 1);
+    } else {
+      setCurrentIndex(0);
     }
   };
 
@@ -79,7 +92,6 @@ function App() {
                   Please provide a title.
                 </Form.Control.Feedback>
               </Form.Group>
-
               <Form.Group className="mb-3">
                 <Form.Control
                   value={body}
@@ -93,7 +105,6 @@ function App() {
                   Journal entries cannot be blank.
                 </Form.Control.Feedback>
               </Form.Group>
-
               <Form.Group>
                 <Form.Control
                   value={key}
@@ -105,7 +116,21 @@ function App() {
             </Form>
           </Modal.Body>
           <Modal.Footer>
+            <Button variant="secondary" onClick={() => setShowModal(false)}>Cancel</Button>
             <Button variant="primary" onClick={addNewNote}>Save Note</Button>
+          </Modal.Footer>
+        </Modal>
+
+        <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)} centered>
+          <Modal.Header closeButton>
+            <Modal.Title>Confirm Deletion</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            Are you sure you want to delete this entry? This action cannot be undone.
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>Cancel</Button>
+            <Button variant="danger" onClick={deleteNote}>Delete</Button>
           </Modal.Footer>
         </Modal>
 
@@ -145,7 +170,10 @@ function App() {
                     <div className="paper-container">
                       <div className="paper-margin"></div>
                       <div className="paper-content">
-                        <h3 className="m-0 fw-bold">{currentNote.title}</h3>
+                        <div className="d-flex justify-content-between align-items-start">
+                          <h3 className="m-0 fw-bold">{currentNote.title}</h3>
+                         <FontAwesomeIcon icon={faTrash} onClick={() => setShowDeleteModal(true)} className="trash-icon" />
+                        </div>
                         <div className="d-flex align-items-center" style={{ height: '1.6rem' }}>
                           <span className="small text-muted me-3">
                             {new Date(currentNote.date).toLocaleDateString()}
