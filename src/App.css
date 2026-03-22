@@ -48,15 +48,15 @@ textarea, input {
 }
 
 .paper-content {
-  padding: 2rem 3.5rem 2rem 4.5rem; /* Increased right padding to 3.5rem */
+  padding: 2rem 3.5rem 2rem 4.5rem;
   line-height: 1.6rem;
   position: relative;
   z-index: 1;
   text-align: left;
   max-height: 400px;
   overflow-y: auto;
-  overflow-x: hidden; /* Fix: Disable horizontal scrolling */
-  overflow-wrap: break-word; /* Fix: Wrap long strings with no spaces */
+  overflow-x: hidden;
+  overflow-wrap: break-word;
   scrollbar-width: thin;
 }
 

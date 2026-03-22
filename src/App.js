@@ -4,7 +4,7 @@ import { Form, Button, Container, Row, Col, Modal } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { encrypt, decrypt } from './security/encryption';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faEdit, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 
 function App() {
   const [title, setTitle] = React.useState("");
@@ -64,7 +64,7 @@ function App() {
           <p>
             Want extra protection? Simply enter a password in the encryption key field to safeguard your notes with powerful AES encryption. Just make sure to remember your password - no one's remembering it for you!
           </p>
-          
+          <br/>
           <div className="d-flex flex-column flex-sm-row justify-content-center align-items-center gap-3 mt-3">
             <Button 
               variant="primary" 
@@ -75,7 +75,7 @@ function App() {
                 setShowModal(true);
               }}
             >
-              + New Entry
+              <FontAwesomeIcon icon={faEdit} /> New Entry
             </Button>
             <Button 
               variant="outline-secondary" 
@@ -83,7 +83,7 @@ function App() {
               className="px-5 shadow-sm w-100 w-sm-auto"
               onClick={() => setShowFAQModal(true)}
             >
-              FAQs
+              <FontAwesomeIcon icon={faQuestionCircle} /> FAQs
             </Button>
           </div>
         </Container>
