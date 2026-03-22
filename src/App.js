@@ -13,6 +13,7 @@ function App() {
   
   const [showModal, setShowModal] = React.useState(false);
   const [showDeleteModal, setShowDeleteModal] = React.useState(false);
+  const [showFAQModal, setShowFAQModal] = React.useState(false);
   const [validated, setValidated] = React.useState(false);
   const [currentIndex, setCurrentIndex] = React.useState(0);
   const [decryptionKeys, setDecryptionKeys] = React.useState({});
@@ -63,16 +64,28 @@ function App() {
           <p>
             Want extra protection? Simply enter a password in the encryption key field to safeguard your notes with powerful AES encryption. Just make sure to remember your password - no one's remembering it for you!
           </p>
-          <Button 
-            variant="primary" 
-            size="lg" 
-            onClick={() => {
-              setValidated(false);
-              setShowModal(true);
-            }}
-          >
-            + New Entry
-          </Button>
+          
+          <div className="d-flex flex-column flex-sm-row justify-content-center align-items-center gap-3 mt-3">
+            <Button 
+              variant="primary" 
+              size="lg" 
+              className="px-5 shadow-sm w-100 w-sm-auto"
+              onClick={() => {
+                setValidated(false);
+                setShowModal(true);
+              }}
+            >
+              + New Entry
+            </Button>
+            <Button 
+              variant="outline-secondary" 
+              size="lg" 
+              className="px-5 shadow-sm w-100 w-sm-auto"
+              onClick={() => setShowFAQModal(true)}
+            >
+              FAQs
+            </Button>
+          </div>
         </Container>
 
         <Modal show={showModal} onHide={() => setShowModal(false)} centered>
@@ -92,6 +105,7 @@ function App() {
                   Please provide a title.
                 </Form.Control.Feedback>
               </Form.Group>
+
               <Form.Group className="mb-3">
                 <Form.Control
                   value={body}
@@ -105,6 +119,7 @@ function App() {
                   Journal entries cannot be blank.
                 </Form.Control.Feedback>
               </Form.Group>
+
               <Form.Group>
                 <Form.Control
                   value={key}
@@ -132,6 +147,31 @@ function App() {
             <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>Cancel</Button>
             <Button variant="danger" onClick={deleteNote}>Delete</Button>
           </Modal.Footer>
+        </Modal>
+
+        <Modal show={showFAQModal} onHide={() => setShowFAQModal(false)} centered size="lg">
+          <Modal.Header closeButton>
+            <Modal.Title>Frequently Asked Questions</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <h5>How do I know my data is secure?</h5>
+            <p>
+              Think of the encryption in your journal as a digital "scrambler" that turns your readable text into a chaotic string of random characters. 
+              When you enter a password, the app uses a specialized formula called <strong>scrypt</strong> to stretch that password into a complex, 256-bit "secret key." 
+              This key is then used by the <strong>AES</strong> algorithm (the same standard used by banks and governments) to lock your note. 
+              Because this process happens entirely on your own device and the scrambled result is stored only in your browser's local memory, 
+              your thoughts remain private even if someone else looks at your computer's files.
+            </p>
+            <h5>How do I know entries are only stored on device?</h5>
+            <p>You can verify this yourself using your browser's built-in developer tools. Right-click anywhere on the page and select <strong>Inspect</strong>, then navigate to the <strong>Network</strong> tab. 
+        As you create, save, or view notes, you will notice that no new "requests" or data transmissions are sent to any external website or server. 
+        Everything stays strictly within your browser's <strong>Local Storage</strong>, which you can also view under the <strong>Application</strong> tab.</p>
+
+        <p>That being said, you should avoid using this app on public or shared computers, as your browser data is tied to the device. 
+        Additionally, because there is <strong>NO CLOUD BACKUP</strong>, you should not use this for critical data that you cannot afford to lose if your device fails or your browser cache is cleared.</p>
+
+        For complaints, feature requests, or other queries, please reach out to <a href="mailto:chat@franklinyin.com">chat@franklinyin.com</a>.
+          </Modal.Body>
         </Modal>
 
         <Container fluid="lg">
@@ -172,7 +212,11 @@ function App() {
                       <div className="paper-content">
                         <div className="d-flex justify-content-between align-items-start">
                           <h3 className="m-0 fw-bold">{currentNote.title}</h3>
-                         <FontAwesomeIcon icon={faTrash} onClick={() => setShowDeleteModal(true)} className="trash-icon" />
+                          <FontAwesomeIcon 
+                            icon={faTrash} 
+                            onClick={() => setShowDeleteModal(true)} 
+                            className="trash-icon"
+                          />
                         </div>
                         <div className="d-flex align-items-center" style={{ height: '1.6rem' }}>
                           <span className="small text-muted me-3">
