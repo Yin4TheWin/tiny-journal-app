@@ -88,7 +88,7 @@ function App() {
           </div>
         </Container>
 
-        <Modal show={showModal} onHide={() => setShowModal(false)} centered>
+        <Modal show={showModal} onHide={() => setShowModal(false)} centered size='lg'>
           <Modal.Header closeButton>
             <Modal.Title>New Journal Entry</Modal.Title>
           </Modal.Header>
@@ -131,8 +131,9 @@ function App() {
             </Form>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={() => setShowModal(false)}>Cancel</Button>
-            <Button variant="primary" onClick={addNewNote}>Save Note</Button>
+           <Button variant="primary" onClick={addNewNote} className="w-100">
+      Save Note
+    </Button>
           </Modal.Footer>
         </Modal>
 
@@ -144,8 +145,8 @@ function App() {
             Are you sure you want to delete this entry? This action cannot be undone.
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>Cancel</Button>
-            <Button variant="danger" onClick={deleteNote}>Delete</Button>
+            <Button variant="secondary" onClick={() => setShowDeleteModal(false)} className="flex-fill">Cancel</Button>
+            <Button variant="danger" onClick={deleteNote} className="flex-fill">Delete</Button>
           </Modal.Footer>
         </Modal>
 
