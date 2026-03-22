@@ -26,28 +26,6 @@ textarea, input {
   border: none;
 }
 
-.accordion-button:not(.collapsed) {
-  background-color: #93c7ff;
-  color: white;
-}
-
-.accordion-body {
-  background-color: #f8f9fa;
-}
-
-span.maintext{
-  word-break: break-word;
-  flex-basis: auto;
-}
-
-span.subtext {
-  word-break: break-word;
-  color: #888;
-  font-style: italic;
-  margin-left: auto;
-  margin-right: 5px;
-}
-
 .paper-container {
   background-color: white;
   min-height: 450px;
@@ -70,13 +48,15 @@ span.subtext {
 }
 
 .paper-content {
-  padding: 2rem 2rem 2rem 4.5rem;
+  padding: 2rem 3.5rem 2rem 4.5rem; /* Increased right padding to 3.5rem */
   line-height: 1.6rem;
   position: relative;
   z-index: 1;
   text-align: left;
   max-height: 400px;
   overflow-y: auto;
+  overflow-x: hidden; /* Fix: Disable horizontal scrolling */
+  overflow-wrap: break-word; /* Fix: Wrap long strings with no spaces */
   scrollbar-width: thin;
 }
 
@@ -130,9 +110,6 @@ span.subtext {
   opacity: 0.8;
 }
 
-/* Ensure the paper container doesn't grow too wide on split screen */
-.paper-stack {
-  position: relative;
-  width: 100%;
-  margin: 0 auto;
+.paper-content input::placeholder {
+  font-weight: bold;
 }

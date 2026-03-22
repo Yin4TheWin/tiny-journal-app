@@ -45,10 +45,10 @@ function App() {
         <Container className="text-center mb-5">
           <h1>Tiny Journal App</h1>
           <p className="lead">
-          Capture your thoughts securely and store them locally — no cloud, no third parties!
+            Capture your thoughts securely and store them locally — no cloud, no third parties!
           </p>
           <p>
-          Want extra protection? Simply enter a password in the encryption key field to safeguard your notes with powerful AES encryption. Just make sure to remember your password - no one's remembering it for you!
+            Want extra protection? Simply enter a password in the encryption key field to safeguard your notes with powerful AES encryption. Just make sure to remember your password - no one's remembering it for you!
           </p>
           <Button 
             variant="primary" 
@@ -74,7 +74,6 @@ function App() {
                   onChange={(e) => setTitle(e.target.value)}
                   placeholder="Entry Title"
                   isInvalid={validated && title.trim().length === 0}
-                  className="border-0 border-bottom rounded-0 shadow-none"
                 />
                 <Form.Control.Feedback type="invalid">
                   Please provide a title.
@@ -89,7 +88,6 @@ function App() {
                   rows={6}
                   placeholder="Write your thoughts..."
                   isInvalid={validated && body.trim().length === 0}
-                  className="border-0 border-bottom rounded-0 shadow-none"
                 />
                 <Form.Control.Feedback type="invalid">
                   Journal entries cannot be blank.
@@ -102,75 +100,84 @@ function App() {
                   onChange={(e) => setKey(e.target.value)}
                   type="password"
                   placeholder="Encryption Key (Optional)"
-                  className="border-0 border-bottom rounded-0 shadow-none"
                 />
               </Form.Group>
             </Form>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={() => setShowModal(false)}>Cancel</Button>
             <Button variant="primary" onClick={addNewNote}>Save Note</Button>
           </Modal.Footer>
         </Modal>
 
         <Container fluid="lg">
-          {savedNotes.length === 0 ? (
-            <h5 className="text-center">No notes yet!</h5>
-          ) : (
-            <Row className="justify-content-center">
-              <Col md={4} className="d-none d-md-block mb-4">
-                <div className="notes-sidebar shadow-sm">
-                  {savedNotes.map((note, index) => (
-                    <div 
-                      key={note.date} 
-                      className={`sidebar-item ${currentIndex === index ? 'active' : ''}`}
-                      onClick={() => setCurrentIndex(index)}
-                    >
-                      <strong className="d-block text-truncate">{note.title}</strong>
-                      <span className="note-date">{new Date(note.date).toLocaleDateString()}</span>
-                    </div>
-                  ))}
-                </div>
-              </Col>
-              
-              <Col xs={12} md={8} className="mb-4">
+          <Row className="justify-content-center">
+            {savedNotes.length === 0 ? (
+              <Col xs={12}>
                 <div className="paper-stack">
                   <div className="paper-container">
                     <div className="paper-margin"></div>
-                    <div className="paper-content">
-                      <h3 className="m-0 fw-bold">{currentNote.title}</h3>
-                      <div className="d-flex align-items-center" style={{ height: '1.6rem' }}>
-                        <span className="small text-muted me-3">
-                          {new Date(currentNote.date).toLocaleDateString()}
-                        </span>
-                        <Form.Control 
-                          type="password"
-                          placeholder="Password to decrypt..."
-                          className="p-0 border-0 bg-transparent shadow-none w-50"
-                          style={{ fontSize: '0.85rem', height: '1.6rem' }}
-                          value={decryptionKeys[currentIndex] || ""}
-                          onChange={(e) => {
-                            const newKeys = { ...decryptionKeys, [currentIndex]: e.target.value };
-                            setDecryptionKeys(newKeys);
-                          }}
-                        />
-                      </div>
-                      <div className="mt-2" style={{ whiteSpace: 'pre-wrap' }}>
-                        {decryptionKeys[currentIndex] 
-                          ? decrypt(currentNote.body, decryptionKeys[currentIndex])
-                          : currentNote.body}
-                      </div>
+                    <div className="paper-content text-center d-flex flex-column justify-content-center" style={{ minHeight: '450px' }}>
+                      <h3 className="fw-bold text-muted">Your journal is empty</h3>
+                      <p className="lead">Click "New Entry" to add your first note!</p>
                     </div>
-                  </div>
-                  <div className="d-flex justify-content-between align-items-center mt-4 px-2">
-                    <Button variant="dark" disabled={currentIndex === 0} onClick={() => setCurrentIndex(currentIndex - 1)}>&lt; Newer</Button>
-                    <span className="text-dark fw-bold">{currentIndex + 1} / {savedNotes.length}</span>
-                    <Button variant="dark" disabled={currentIndex === savedNotes.length - 1} onClick={() => setCurrentIndex(currentIndex + 1)}>Older &gt;</Button>
                   </div>
                 </div>
               </Col>
-            </Row>
-          )}
+            ) : (
+              <>
+                <Col md={4} className="d-none d-md-block mb-4">
+                  <div className="notes-sidebar shadow-sm">
+                    {savedNotes.map((note, index) => (
+                      <div 
+                        key={note.date} 
+                        className={`sidebar-item ${currentIndex === index ? 'active' : ''}`}
+                        onClick={() => setCurrentIndex(index)}
+                      >
+                        <strong className="d-block text-truncate">{note.title}</strong>
+                        <span className="note-date">{new Date(note.date).toLocaleDateString()}</span>
+                      </div>
+                    ))}
+                  </div>
+                </Col>
+                
+                <Col xs={12} md={8} className="mb-4">
+                  <div className="paper-stack">
+                    <div className="paper-container">
+                      <div className="paper-margin"></div>
+                      <div className="paper-content">
+                        <h3 className="m-0 fw-bold">{currentNote.title}</h3>
+                        <div className="d-flex align-items-center" style={{ height: '1.6rem' }}>
+                          <span className="small text-muted me-3">
+                            {new Date(currentNote.date).toLocaleDateString()}
+                          </span>
+                          <Form.Control 
+                            type="password"
+                            placeholder="Enter password..."
+                            style={{ fontSize: '0.85rem', height: '1.6rem' }}
+                            value={decryptionKeys[currentIndex] || ""}
+                            onChange={(e) => {
+                              const newKeys = { ...decryptionKeys, [currentIndex]: e.target.value };
+                              setDecryptionKeys(newKeys);
+                            }}
+                          />
+                        </div>
+                        <div className="mt-2" style={{ whiteSpace: 'pre-wrap', overflowWrap: 'break-word' }}>
+                          {decryptionKeys[currentIndex] 
+                            ? decrypt(currentNote.body, decryptionKeys[currentIndex])
+                            : currentNote.body}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="d-flex justify-content-between align-items-center mt-4 px-2">
+                      <Button variant="dark" disabled={currentIndex === 0} onClick={() => setCurrentIndex(currentIndex - 1)}>&lt; Newer</Button>
+                      <span className="text-dark fw-bold">{currentIndex + 1} / {savedNotes.length}</span>
+                      <Button variant="dark" disabled={currentIndex === savedNotes.length - 1} onClick={() => setCurrentIndex(currentIndex + 1)}>Older &gt;</Button>
+                    </div>
+                  </div>
+                </Col>
+              </>
+            )}
+          </Row>
         </Container>
       </header>
     </div>
