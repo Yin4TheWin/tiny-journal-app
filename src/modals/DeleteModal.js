@@ -1,7 +1,17 @@
 import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
-function DeleteModal({ show, onHide, deleteNote }) {
+function DeleteModal({ show, onHide, dispatch, currentIndex, setCurrentIndex }) {
+  const deleteNote = () => {
+    dispatch({ type: 'delete', index: currentIndex });
+    onHide();
+    if (currentIndex > 0) {
+      setCurrentIndex(currentIndex - 1);
+    } else {
+      setCurrentIndex(0);
+    }
+  };
+
   return (
     <Modal show={show} onHide={onHide} centered>
       <Modal.Header closeButton>

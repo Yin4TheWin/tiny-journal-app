@@ -3,7 +3,24 @@ import { Modal, Container, Row, Col, Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileImport, faFileExport } from '@fortawesome/free-solid-svg-icons';
 
-function ImportExportModal({ show, onHide, exportJournal }) {
+function ImportExportModal({ show, onHide, savedNotes }) {
+  const exportJournal = () => {
+    const data = { notes: savedNotes };
+    const jsonString = JSON.stringify(data, null, 2);
+
+    const blob = new Blob([jsonString], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    
+    link.href = url;
+    link.download = `tiny-journal-export-${new Date().toISOString().split('T')[0]}.json`;
+    document.body.appendChild(link);
+    link.click();
+
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <Modal show={show} onHide={onHide} centered size="lg">
       <Modal.Header closeButton>

@@ -2,18 +2,18 @@ import './App.css';
 import React from 'react';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
-import { encrypt, decrypt } from './security/encryption';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faEdit, faQuestionCircle, faSave } from '@fortawesome/free-solid-svg-icons';
 import NewEntryModal from './modals/NewEntryModal';
 import DeleteModal from './modals/DeleteModal';
 import FAQModal from './modals/FAQModal';
 import ImportExportModal from './modals/ImportExportModal';
+import { decrypt } from './security/encryption';
 
 function App() {
   const [title, setTitle] = React.useState("");
   const [body, setBody] = React.useState("");
-  const [key, setKey] = React.useState("");
+  const [encryptionKey, setKey] = React.useState("");
   
   const [showModal, setShowModal] = React.useState(false);
   const [showDeleteModal, setShowDeleteModal] = React.useState(false);
@@ -29,49 +29,6 @@ function App() {
   React.useEffect(() => {
     localStorage.setItem('state', JSON.stringify({ notes: savedNotes }));
   }, [savedNotes]);
-
-  const addNewNote = () => {
-    if (title.trim().length > 0 && body.trim().length > 0) {
-      let encryptedBody = key.length > 0 ? encrypt(body, key) : body;
-      dispatch({ type: 'add', newNote: { title, body: encryptedBody, date: Date.now() } });
-      
-      setTitle("");
-      setBody("");
-      setKey("");
-      setValidated(false);
-      setShowModal(false);
-      setCurrentIndex(0);
-    } else {
-      setValidated(true);
-    }
-  };
-
-  const deleteNote = () => {
-    dispatch({ type: 'delete', index: currentIndex });
-    setShowDeleteModal(false);
-    if (currentIndex > 0) {
-      setCurrentIndex(currentIndex - 1);
-    } else {
-      setCurrentIndex(0);
-    }
-  };
-
-  const exportJournal = () => {
-    const data = { notes: savedNotes };
-    const jsonString = JSON.stringify(data, null, 2);
-
-    const blob = new Blob([jsonString], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    
-    link.href = url;
-    link.download = `tiny-journal-export-${new Date().toISOString().split('T')[0]}.json`;
-    document.body.appendChild(link);
-    link.click();
-
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-  };
 
   
 
@@ -112,13 +69,13 @@ function App() {
           </div>
         </Container>
 
-        <NewEntryModal show={showModal} onHide={() => setShowModal(false)} title={title} setTitle={setTitle} body={body} setBody={setBody} key={key} setKey={setKey} addNewNote={addNewNote} validated={validated} />
+        <NewEntryModal show={showModal} onHide={() => setShowModal(false)} dispatch={dispatch} title={title} setTitle={setTitle} body={body} setBody={setBody} encryptionKey={encryptionKey} setKey={setKey} validated={validated} setValidated={setValidated} setCurrentIndex={setCurrentIndex} />
 
-        <DeleteModal show={showDeleteModal} onHide={() => setShowDeleteModal(false)} deleteNote={deleteNote} />
+        <DeleteModal show={showDeleteModal} onHide={() => setShowDeleteModal(false)} dispatch={dispatch} currentIndex={currentIndex} setCurrentIndex={setCurrentIndex} />
 
         <FAQModal show={showFAQModal} onHide={() => setShowFAQModal(false)} />
 
-        <ImportExportModal show={showImportExportModal} onHide={() => setShowImportExportModal(false)} exportJournal={exportJournal} />
+        <ImportExportModal show={showImportExportModal} onHide={() => setShowImportExportModal(false)} savedNotes={savedNotes} />
 
         <Container fluid="lg">
           <Row className="justify-content-center">
