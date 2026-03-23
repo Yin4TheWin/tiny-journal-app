@@ -75,7 +75,7 @@ function App() {
 
         <FAQModal show={showFAQModal} onHide={() => setShowFAQModal(false)} />
 
-        <ImportExportModal show={showImportExportModal} onHide={() => setShowImportExportModal(false)} savedNotes={savedNotes} />
+        <ImportExportModal show={showImportExportModal} onHide={() => setShowImportExportModal(false)} savedNotes={savedNotes} dispatch={dispatch} />
 
         <Container fluid="lg">
           <Row className="justify-content-center">
