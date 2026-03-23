@@ -126,6 +126,13 @@ textarea, input {
   opacity: 0.8;
 }
 
+.note-title {
+  max-width: calc(100% - 40px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .trash-icon:active {
   color: #0d6efd;
 }

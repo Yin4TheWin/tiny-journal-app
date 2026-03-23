@@ -114,7 +114,7 @@ function App() {
                       <div className="paper-margin"></div>
                       <div className="paper-content">
                         <div className="d-flex justify-content-between align-items-start">
-                          <h3 className="m-0 fw-bold">{currentNote.title}</h3>
+                          <h3 className="m-0 fw-bold note-title">{currentNote.title}</h3>
                           <FontAwesomeIcon 
                             icon={faTrash} 
                             onClick={() => setShowDeleteModal(true)} 
