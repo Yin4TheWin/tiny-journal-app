@@ -13,6 +13,9 @@ const notesReducer = (state = {notes: []}, action)=>{
             notes: updatedNotes
         }
     }
+    if(action.type==='override'){
+      return { ...state, notes: action.newNotes };
+    }
     return state
 }
 const persistentState = localStorage.getItem('state') ? JSON.parse(localStorage.getItem('state')) : {notes: []}

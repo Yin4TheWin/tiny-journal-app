@@ -1,10 +1,14 @@
 import './App.css';
 import React from 'react';
-import { Form, Button, Container, Row, Col, Modal } from 'react-bootstrap';
+import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { encrypt, decrypt } from './security/encryption';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faEdit, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faEdit, faQuestionCircle, faSave } from '@fortawesome/free-solid-svg-icons';
+import NewEntryModal from './modals/NewEntryModal';
+import DeleteModal from './modals/DeleteModal';
+import FAQModal from './modals/FAQModal';
+import ImportExportModal from './modals/ImportExportModal';
 
 function App() {
   const [title, setTitle] = React.useState("");
@@ -14,6 +18,7 @@ function App() {
   const [showModal, setShowModal] = React.useState(false);
   const [showDeleteModal, setShowDeleteModal] = React.useState(false);
   const [showFAQModal, setShowFAQModal] = React.useState(false);
+  const [showImportExportModal, setShowImportExportModal] = React.useState(false);
   const [validated, setValidated] = React.useState(false);
   const [currentIndex, setCurrentIndex] = React.useState(0);
   const [decryptionKeys, setDecryptionKeys] = React.useState({});
@@ -51,6 +56,25 @@ function App() {
     }
   };
 
+  const exportJournal = () => {
+    const data = { notes: savedNotes };
+    const jsonString = JSON.stringify(data, null, 2);
+
+    const blob = new Blob([jsonString], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    
+    link.href = url;
+    link.download = `tiny-journal-export-${new Date().toISOString().split('T')[0]}.json`;
+    document.body.appendChild(link);
+    link.click();
+
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
+  
+
   const currentNote = savedNotes[currentIndex];
 
   return (
@@ -62,7 +86,7 @@ function App() {
             Capture your thoughts securely and store them locally — no cloud, no third parties!
           </p>
           <p>
-            Want extra protection? Simply enter a password in the encryption key field to safeguard your notes with powerful AES encryption. Just make sure to remember your password - no one's remembering it for you!
+            Want extra protection? Simply enter a password in the encryption key field to safeguard your notes with powerful AES encryption. Just make sure to remember your password - no one's remembering it for you! <span className="text-primary" style={{ textDecoration: 'underline', cursor: 'pointer' }} onClick={() => setShowFAQModal(true)}>(FAQs <FontAwesomeIcon icon={faQuestionCircle} />)</span>
           </p>
           <br/>
           <div className="d-flex flex-column flex-sm-row justify-content-center align-items-center gap-3 mt-3">
@@ -78,102 +102,23 @@ function App() {
               <FontAwesomeIcon icon={faEdit} /> New Entry
             </Button>
             <Button 
-              variant="outline-secondary" 
+              variant="outline-dark" 
               size="lg" 
               className="px-5 shadow-sm w-100 w-sm-auto"
-              onClick={() => setShowFAQModal(true)}
+              onClick={() => setShowImportExportModal(true)}
             >
-              <FontAwesomeIcon icon={faQuestionCircle} /> FAQs
+              <FontAwesomeIcon icon={faSave} /> Import/Export
             </Button>
           </div>
         </Container>
 
-        <Modal show={showModal} onHide={() => setShowModal(false)} centered size='lg'>
-          <Modal.Header closeButton>
-            <Modal.Title>New Journal Entry</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Form noValidate>
-              <Form.Group className="mb-3">
-                <Form.Control
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  placeholder="Entry Title"
-                  isInvalid={validated && title.trim().length === 0}
-                />
-                <Form.Control.Feedback type="invalid">
-                  Please provide a title.
-                </Form.Control.Feedback>
-              </Form.Group>
+        <NewEntryModal show={showModal} onHide={() => setShowModal(false)} title={title} setTitle={setTitle} body={body} setBody={setBody} key={key} setKey={setKey} addNewNote={addNewNote} validated={validated} />
 
-              <Form.Group className="mb-3">
-                <Form.Control
-                  value={body}
-                  onChange={(e) => setBody(e.target.value)}
-                  as="textarea"
-                  rows={6}
-                  placeholder="Write your thoughts..."
-                  isInvalid={validated && body.trim().length === 0}
-                />
-                <Form.Control.Feedback type="invalid">
-                  Journal entries cannot be blank.
-                </Form.Control.Feedback>
-              </Form.Group>
+        <DeleteModal show={showDeleteModal} onHide={() => setShowDeleteModal(false)} deleteNote={deleteNote} />
 
-              <Form.Group>
-                <Form.Control
-                  value={key}
-                  onChange={(e) => setKey(e.target.value)}
-                  type="password"
-                  placeholder="Encryption Key (Optional)"
-                />
-              </Form.Group>
-            </Form>
-          </Modal.Body>
-          <Modal.Footer>
-           <Button variant="primary" onClick={addNewNote} className="w-100">
-      Save Note
-    </Button>
-          </Modal.Footer>
-        </Modal>
+        <FAQModal show={showFAQModal} onHide={() => setShowFAQModal(false)} />
 
-        <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)} centered>
-          <Modal.Header closeButton>
-            <Modal.Title>Confirm Deletion</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            Are you sure you want to delete this entry? This action cannot be undone.
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={() => setShowDeleteModal(false)} className="flex-fill">Cancel</Button>
-            <Button variant="danger" onClick={deleteNote} className="flex-fill">Delete</Button>
-          </Modal.Footer>
-        </Modal>
-
-        <Modal show={showFAQModal} onHide={() => setShowFAQModal(false)} centered size="lg">
-          <Modal.Header closeButton>
-            <Modal.Title>Frequently Asked Questions</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <h5>How do I know my data is secure?</h5>
-            <p>
-              Think of the encryption in your journal as a digital "scrambler" that turns your readable text into a chaotic string of random characters. 
-              When you enter a password, the app uses a specialized formula called <strong>scrypt</strong> to stretch that password into a complex, 256-bit "secret key." 
-              This key is then used by the <strong>AES</strong> algorithm (the same standard used by banks and governments) to lock your note. 
-              Because this process happens entirely on your own device and the scrambled result is stored only in your browser's local memory, 
-              your thoughts remain private even if someone else looks at your computer's files.
-            </p>
-            <h5>How do I know entries are only stored on device?</h5>
-            <p>You can verify this yourself using your browser's built-in developer tools. Right-click anywhere on the page and select <strong>Inspect</strong>, then navigate to the <strong>Network</strong> tab. 
-        As you create, save, or view notes, you will notice that no new "requests" or data transmissions are sent to any external website or server. 
-        Everything stays strictly within your browser's <strong>Local Storage</strong>, which you can also view under the <strong>Application</strong> tab.</p>
-
-        <p>That being said, you should avoid using this app on public or shared computers, as your browser data is tied to the device. 
-        Additionally, because there is <strong>NO CLOUD BACKUP</strong>, you should not use this for critical data that you cannot afford to lose if your device fails or your browser cache is cleared.</p>
-
-        For complaints, feature requests, or other queries, please reach out to <a href="mailto:chat@franklinyin.com">chat@franklinyin.com</a>.
-          </Modal.Body>
-        </Modal>
+        <ImportExportModal show={showImportExportModal} onHide={() => setShowImportExportModal(false)} exportJournal={exportJournal} />
 
         <Container fluid="lg">
           <Row className="justify-content-center">
