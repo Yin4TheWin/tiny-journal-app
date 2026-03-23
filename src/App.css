@@ -28,7 +28,8 @@ textarea, input {
 
 .paper-container {
   background-color: white;
-  height: calc(100vh - 33rem);
+  min-height: 450px;
+  height: calc(100vh - 30rem);
   position: relative;
   border: 1px solid #dee2e6;
   box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175);
@@ -48,6 +49,7 @@ textarea, input {
 }
 
 .paper-content {
+  min-height: 450px;
   height: calc(100vh - 33rem);
   padding: 2rem 3.5rem 2rem 4.5rem;
   line-height: 1.6rem;
@@ -79,6 +81,7 @@ textarea, input {
 }
 
 .notes-sidebar {
+  min-height: 450px;
   height: calc(100vh - 30rem);
   overflow-y: auto;
   border: 1px solid #dee2e6;
