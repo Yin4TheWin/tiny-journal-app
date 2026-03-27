@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Tiny Journal App",
+  "name": "Simple, secure, on-device notes",
   "icons": [
     {
       "src": "favicon.ico",
