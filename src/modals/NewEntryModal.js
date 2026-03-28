@@ -77,7 +77,7 @@ function NewEntryModal({ show, onHide, dispatch, title, setTitle, body, setBody,
                     value={encryptionKey}
                     onChange={(e) => setKey(e.target.value)}
                     type="password"
-                    placeholder="Encryption Key (Optional)"
+                    placeholder="Password (Optional)"
                     className="border-0 bg-transparent shadow-none p-0"
                     style={{ fontSize: '0.9rem' }}
                   />
