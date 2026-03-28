@@ -1,0 +1,87 @@
+.import-export-modal-dialog .modal-content {
+  background: #272727;
+  border: 1px solid rgba(0, 173, 181, 0.35);
+  box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.45);
+  border-radius: 1.25rem;
+  color: #e9f7fb;
+}
+
+.import-export-modal-header {
+  border-bottom: none;
+  justify-content: center;
+  padding-bottom: 0;
+}
+
+.import-export-modal-title {
+  color: #00adb5;
+  letter-spacing: 0.08em;
+  font-size: 1.1rem;
+}
+
+.import-export-modal-body {
+  padding: 2rem;
+}
+
+.import-export-inner {
+  max-width: 100%;
+}
+
+.import-export-icon {
+  width: 96px;
+  height: 96px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(0, 173, 181, 0.12);
+  color: #00adb5;
+  font-size: 2.4rem;
+  border: 1px solid rgba(0, 173, 181, 0.26);
+  box-shadow: 0 0 0 1px rgba(0, 173, 181, 0.12), 0 18px 40px rgba(0, 0, 0, 0.25);
+}
+
+.import-export-intro {
+  color: #c4f1ff;
+  opacity: 0.92;
+}
+
+.import-export-zone {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(0, 173, 181, 0.18);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-radius: 1rem;
+}
+
+.import-export-zone p {
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.import-export-zone .btn {
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.import-export-zone .btn-outline-primary {
+  color: #00adb5;
+  border-color: rgba(0, 173, 181, 0.8);
+}
+
+.import-export-zone .btn-outline-danger {
+  color: #ff7d7d;
+  border-color: rgba(255, 125, 125, 0.8);
+}
+
+.import-export-zone .btn-outline-success {
+  color: #8fffd8;
+  border-color: rgba(143, 255, 216, 0.8);
+}
+
+.import-export-zone .btn-outline-primary:hover,
+.import-export-zone .btn-outline-danger:hover,
+.import-export-zone .btn-outline-success:hover {
+  background: rgba(0, 173, 181, 0.14);
+}
+
+.import-export-modal-body .text-center p {
+  color: #d5f7ff;
+}
