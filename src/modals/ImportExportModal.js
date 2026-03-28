@@ -79,6 +79,7 @@ function ImportExportModal({ show, onHide, savedNotes, dispatch }) {
 
   return (
     <Modal show={show} onHide={onHide} centered size="lg" dialogClassName="import-export-modal-dialog" contentClassName="import-export-modal-content">
+      <Modal.Header closeButton className="import-export-modal-header" />
       <Modal.Body className="import-export-modal-body">
         {isImporting ? (
           <div className="text-center">
